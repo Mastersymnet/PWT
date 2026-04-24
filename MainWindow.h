@@ -234,8 +234,8 @@ namespace PWTranslator {
 			this->linkGitHub->Size = System::Drawing::Size(165, 16);
 			this->linkGitHub->TabIndex = 23;
 			this->linkGitHub->TabStop = true;
-			this->linkGitHub->Tag = L"https://github.com/master9028";
-			this->linkGitHub->Text = L"github.com/master9028";
+			this->linkGitHub->Tag = L"https://github.com/Mastersymnet/PWT";
+			this->linkGitHub->Text = L"github.com/Mastersymnet/PWT";
 			this->linkGitHub->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MainWindow::linkGitHub_LinkClicked);
 			// 
 			// MainWindow
@@ -294,7 +294,7 @@ namespace PWTranslator {
 		this->linkGitHub->VisitedLinkColor = Color::FromArgb(255, 175, 130);
 		this->linkGitHub->ActiveLinkColor = Color::FromArgb(255, 255, 255);
 		this->linkGitHub->Font = (gcnew System::Drawing::Font(L"Consolas", 9.0F, System::Drawing::FontStyle::Bold));
-		this->linkGitHub->Text = L"master9028";
+		this->linkGitHub->Text = L"Mastersymnet/PWT";
 
 		this->textBox1->BackColor = Color::FromArgb(17, 33, 62);
 		this->textBox2->BackColor = Color::FromArgb(17, 33, 62);
