@@ -104,7 +104,6 @@ TranslateInterface::TranslateInterface(System::String^ firstPath, System::String
     out = context.marshal_as<wstring>(outputPath);
     this->initFiles(path1, L"");
     this->initFolders(out);
-    this->initSTF(path1);
 }
 
 TranslateInterface::~TranslateInterface()
@@ -344,40 +343,85 @@ void TranslateInterface::toNormalChine()
     chinesLinesXML = temp;
 }
 
-bool check(wstring line)
+vector<wstring> extractStringValues(const wstring& block)
 {
-    for (int i = 0; i < 16; i++)
+    vector<wstring> values;
+    const wstring key = L"String=\"";
+    size_t currentPos = 0;
+
+    while (true)
     {
-        wstring currentOpenBracket = OPENBRACKET[i];
-        int posOpenBracket = line.find(currentOpenBracket, currentOpenBracket.size());
-        if (posOpenBracket != string::npos)
+        const size_t keyPos = block.find(key, currentPos);
+        if (keyPos == wstring::npos)
         {
-            return false;
+            break;
         }
+
+        const size_t valueStart = keyPos + key.size();
+        const size_t valueEnd = block.find(L"\"", valueStart);
+        if (valueEnd == wstring::npos)
+        {
+            break;
+        }
+
+        values.push_back(block.substr(valueStart, valueEnd - valueStart));
+        currentPos = valueEnd + 1;
     }
 
-    int posX = line.find(L" x=");
-    int posY = line.find(L" y=");
-    
-    if (line[posX + 4] == L'-' || line[posY + 4] == L'-')
+    return values;
+}
+
+wstring applyStringValues(const wstring& block, const vector<wstring>& values)
+{
+    wstring output = block;
+    const wstring key = L"String=\"";
+    size_t currentPos = 0;
+    size_t valueIndex = 0;
+
+    while (valueIndex < values.size())
     {
-        return false;
+        const size_t keyPos = output.find(key, currentPos);
+        if (keyPos == wstring::npos)
+        {
+            break;
+        }
+
+        const size_t valueStart = keyPos + key.size();
+        const size_t valueEnd = output.find(L"\"", valueStart);
+        if (valueEnd == wstring::npos)
+        {
+            break;
+        }
+
+        output.replace(valueStart, valueEnd - valueStart, values[valueIndex]);
+        currentPos = valueStart + values[valueIndex].size() + 1;
+        valueIndex++;
     }
-    return true;
+
+    return output;
+}
+
+wstring mergeStringAttributes(const wstring& sourceBlock, const wstring& translatedBlock)
+{
+    const vector<wstring> translatedValues = extractStringValues(translatedBlock);
+    if (translatedValues.empty())
+    {
+        return sourceBlock;
+    }
+
+    return applyStringValues(sourceBlock, translatedValues);
 }
 
 void TranslateInterface::toOutput()
 {
     wstring dataLine;
     wstring currentName;
-    bool flag;
     for (int index = 0; index < chinesLinesXML.size(); index++)
     {
         dataLine.clear();
         wstring currentLine = chinesLinesXML[index];
         dataLine += currentLine;
         int numberOpenBracket = openBracket(currentLine);
-        flag = false;
         if (numberOpenBracket != -1)
         {
             dataLine.clear();
@@ -386,6 +430,7 @@ void TranslateInterface::toOutput()
 
             while (!closeBracket(currentLine, numberOpenBracket) && !endLine(secondIndex, index, currentLine))
             {
+                dataLine += currentLine;
                 int posName = currentLine.find(L" Name=");
 
                 if (posName != string::npos)
@@ -393,19 +438,6 @@ void TranslateInterface::toOutput()
                     int posOpenQuote = currentLine.find(L"\"", posName);
                     int posCloseQuote = currentLine.find(L"\"", posOpenQuote + 1);
                     currentName = currentLine.substr(posOpenQuote + 1, posCloseQuote - posOpenQuote - 1);
-                    chinesDataXML.insert(currentName);
-                    if (russianDataXML.find(currentName) != russianDataXML.end())
-                    {
-                        if (check(russianDataXML[currentName]))
-                        {
-                            dataLine = russianDataXML[currentName];
-                            flag = true;
-                        }
-                    }
-                }
-                if (!flag)
-                {
-                    dataLine += currentLine;
                 }
                 secondIndex++;
                 if (secondIndex == chinesLinesXML.size())
@@ -414,31 +446,31 @@ void TranslateInterface::toOutput()
                 }
                 currentLine = chinesLinesXML[secondIndex];
             }
-            if (!flag)
+            if (endLine(secondIndex, index, currentLine) || closeBracket(currentLine, numberOpenBracket))
             {
-                if (endLine(secondIndex, index, currentLine) || closeBracket(currentLine, numberOpenBracket))
+                dataLine += currentLine;
+            }
+
+            if (currentName == L"")
+            {
+                int posName = currentLine.find(L" Name=");
+                if (posName != string::npos)
                 {
-                    dataLine += currentLine;
-                }
-                if (currentName == L"")
-                {
-                    int posName = currentLine.find(L" Name=");
-                    if (posName != string::npos)
-                    {
-                        int posOpenQuote = currentLine.find(L"\"", posName);
-                        int posCloseQuote = currentLine.find(L"\"", posOpenQuote + 1);
-                        currentName = currentLine.substr(posOpenQuote + 1, posCloseQuote - posOpenQuote - 1);
-                        chinesDataXML.insert(currentName);
-                        if (russianDataXML.find(currentName) != russianDataXML.end())
-                        {
-                            if (check(russianDataXML[currentName]))
-                            {
-                                dataLine = russianDataXML[currentName];
-                            }
-                        }
-                    }
+                    int posOpenQuote = currentLine.find(L"\"", posName);
+                    int posCloseQuote = currentLine.find(L"\"", posOpenQuote + 1);
+                    currentName = currentLine.substr(posOpenQuote + 1, posCloseQuote - posOpenQuote - 1);
                 }
             }
+
+            if (currentName != L"")
+            {
+                chinesDataXML.insert(currentName);
+                if (russianDataXML.find(currentName) != russianDataXML.end())
+                {
+                    dataLine = mergeStringAttributes(dataLine, russianDataXML[currentName]);
+                }
+            }
+
             index = secondIndex;
         }
         outputLinesXML.push_back(dataLine);
@@ -596,13 +628,6 @@ void TranslateInterface::translateFile(wstring fileName)
 
     toOutput();
 
-    for (const auto iter : russianDataXML)
-    {
-        if (chinesDataXML.find(iter.first) == chinesDataXML.end())
-        {
-            outputLinesXML.push_back(iter.second);
-        }
-    }
     wstring_convert<codecvt_utf16<
         wchar_t, 0x10ffff, codecvt_mode(generate_header | little_endian)>> conv;
     ofstream fout(out + L"\\" + fileName, ios::out | ios::binary);
