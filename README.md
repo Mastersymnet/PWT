@@ -1,22 +1,61 @@
-# PWTranslator v0.5
+# PWTranslator
 
-### This soft translated intefaces and config files game Perfect World
+Windows tool (C++/CLI + WinForms) to translate Perfect World interface XML files.
 
-### Used:
-- Run PWTranslator.exe
-- Choose Path to folder where ara the located source files
-- Choose Path to folder where ara the located files to translated
-- Choose Path to folder where to save output files
+## What It Does
+- Translates only `.xml` interface files.
+- Replaces only `String="..."` values.
+- Keeps original layout/position/style from source XML.
+- Shows a comparison window (`Before` x `After`) after translation.
+- UI language switch: `Portugues (BR)` and `English`.
 
-### Version
-#### v0.5
-- Fixed bugs and added function for translate interfaces files (.xml and .stf)
+## How To Use
+1. Run `PWTranslator.exe`.
+2. Select **Game folder (original XML)**.
+3. Select **Reference folder (already translated XML)**.
+4. Select **Output folder**.
+5. Click **Generate translated XML**.
 
-### Info
+## Folder Meaning
+- **Game folder (original XML)**: XML files you want to translate now.
+- **Reference folder (already translated XML)**: XML files used as translation source.
+- **Output folder**: where translated XML files are saved.
 
-- In the initFolders function there are several subfolders that will be created regardless of whether they have files or not.
-- depending on the game made in the Angelica engine that you are translating, you will need to add the missing folders in this function
+## Notes
+- The app matches controls by `Name`.
+- If a file/control has no matching translated `String`, original text is kept.
+- Some output subfolders are created automatically by `initFolders`.
 
-- PT-BR
-- na funcao initFolders existe diversas subpastas que serao criadas independe de ter arquivos ou nao.
-- dependendo do jogo feito na Angelica engine que for traduzir, vai precisar adicionar as pastas ausentes nessa funcao
+---
+
+## PT-BR
+
+Ferramenta Windows (C++/CLI + WinForms) para traduzir XML de interface do Perfect World.
+
+### O que faz
+- Traduz somente arquivos `.xml`.
+- Troca somente valores de `String="..."`.
+- Mantem estrutura/posicao/estilo originais do XML de origem.
+- Mostra janela de comparacao (`Antes` x `Depois`) ao final.
+- Interface com dois idiomas: `Portugues (BR)` e `English`.
+
+### Como usar
+1. Execute `PWTranslator.exe`.
+2. Selecione a **Pasta do jogo (XML original)**.
+3. Selecione a **Pasta de referencia (XML ja traduzido)**.
+4. Selecione a **Pasta de saida**.
+5. Clique em **Gerar XML traduzido**.
+
+### Significado das pastas
+- **Pasta do jogo (XML original)**: XML que voce quer traduzir agora.
+- **Pasta de referencia (XML ja traduzido)**: XML usado como fonte da traducao.
+- **Pasta de saida**: onde os XML traduzidos serao salvos.
+
+### Observacoes
+- O app faz correspondencia por `Name`.
+- Se nao houver traducao para determinado `String`, o valor original e mantido.
+- Algumas subpastas de saida sao criadas automaticamente pela funcao `initFolders`.
+
+## Credits
+- Author credits in UI: `master9028`
+- Repository: `https://github.com/Mastersymnet/PWT`

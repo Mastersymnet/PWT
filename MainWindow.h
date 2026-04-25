@@ -30,7 +30,10 @@ namespace PWTranslator {
 		{
 			InitializeComponent();
 			this->translator = nullptr;
+			this->currentLanguage = UILanguage::PtBr;
 			this->applyVisualStyle();
+			this->comboLanguage->SelectedIndex = 0;
+			this->applyLanguageTexts();
 		}
 
 	protected:
@@ -76,6 +79,14 @@ namespace PWTranslator {
 	internal: System::Windows::Forms::Label^ label7;
 	private: System::Windows::Forms::Label^ labelCredits;
 	private: System::Windows::Forms::LinkLabel^ linkGitHub;
+	private: System::Windows::Forms::Label^ labelLanguage;
+	private: System::Windows::Forms::ComboBox^ comboLanguage;
+	private: enum class UILanguage
+	{
+		PtBr = 0,
+		English = 1
+	};
+	private: UILanguage currentLanguage;
 
 	internal:
 
@@ -114,6 +125,8 @@ namespace PWTranslator {
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->labelCredits = (gcnew System::Windows::Forms::Label());
 			this->linkGitHub = (gcnew System::Windows::Forms::LinkLabel());
+			this->labelLanguage = (gcnew System::Windows::Forms::Label());
+			this->comboLanguage = (gcnew System::Windows::Forms::ComboBox());
 			this->SuspendLayout();
 			// 
 			// button1
@@ -245,11 +258,33 @@ namespace PWTranslator {
 			this->linkGitHub->Text = L"github.com/Mastersymnet/PWT";
 			this->linkGitHub->LinkClicked += gcnew System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, &MainWindow::linkGitHub_LinkClicked);
 			// 
+			// labelLanguage
+			// 
+			this->labelLanguage->AutoSize = true;
+			this->labelLanguage->Location = System::Drawing::Point(697, 15);
+			this->labelLanguage->Name = L"labelLanguage";
+			this->labelLanguage->Size = System::Drawing::Size(42, 13);
+			this->labelLanguage->TabIndex = 24;
+			this->labelLanguage->Text = L"Idioma";
+			// 
+			// comboLanguage
+			// 
+			this->comboLanguage->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->comboLanguage->FormattingEnabled = true;
+			this->comboLanguage->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Portugues (BR)", L"English" });
+			this->comboLanguage->Location = System::Drawing::Point(745, 11);
+			this->comboLanguage->Name = L"comboLanguage";
+			this->comboLanguage->Size = System::Drawing::Size(201, 21);
+			this->comboLanguage->TabIndex = 25;
+			this->comboLanguage->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::comboLanguage_SelectedIndexChanged);
+			// 
 			// MainWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(970, 360);
+			this->Controls->Add(this->comboLanguage);
+			this->Controls->Add(this->labelLanguage);
 			this->Controls->Add(this->linkGitHub);
 			this->Controls->Add(this->labelCredits);
 			this->Controls->Add(this->label7);
@@ -293,16 +328,21 @@ namespace PWTranslator {
 		this->label5->ForeColor = Color::FromArgb(178, 185, 206);
 		this->label7->ForeColor = Color::FromArgb(121, 255, 214);
 		this->labelCredits->ForeColor = Color::FromArgb(130, 139, 168);
+		this->labelLanguage->ForeColor = Color::FromArgb(178, 185, 206);
 		this->label7->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 10.75F, System::Drawing::FontStyle::Bold));
 		this->labelCredits->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 9.25F, System::Drawing::FontStyle::Regular));
-		this->label7->Text = L"Preencha os 3 passos: jogo original, referencia traduzida e pasta de saida.";
-		this->labelCredits->Text = L"Creditos: master9028 | Projeto:";
+		this->labelLanguage->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 9.25F, System::Drawing::FontStyle::Regular));
+		this->label7->Text = L"";
+		this->labelCredits->Text = L"";
 
 		this->linkGitHub->LinkColor = Color::FromArgb(92, 170, 255);
 		this->linkGitHub->VisitedLinkColor = Color::FromArgb(177, 132, 255);
 		this->linkGitHub->ActiveLinkColor = Color::FromArgb(255, 255, 255);
 		this->linkGitHub->Font = (gcnew System::Drawing::Font(L"Consolas", 9.25F, System::Drawing::FontStyle::Bold));
 		this->linkGitHub->Text = L"Mastersymnet/PWT";
+		this->comboLanguage->BackColor = Color::FromArgb(17, 17, 23);
+		this->comboLanguage->ForeColor = Color::FromArgb(241, 246, 255);
+		this->comboLanguage->FlatStyle = FlatStyle::Flat;
 
 		this->textBox1->BackColor = Color::FromArgb(17, 17, 23);
 		this->textBox2->BackColor = Color::FromArgb(17, 17, 23);
@@ -362,6 +402,31 @@ namespace PWTranslator {
 
 		this->progressBar1->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
 		this->progressBar1->BackColor = Color::FromArgb(22, 22, 30);
+	}
+	private: bool isEnglish() {
+		return this->currentLanguage == UILanguage::English;
+	}
+	private: String^ tr(String^ pt, String^ en) {
+		return this->isEnglish() ? en : pt;
+	}
+	private: void applyLanguageTexts() {
+		this->Text = this->tr(L"Tradutor PW - Interface", L"PW Translator - Interface");
+		this->labelLanguage->Text = this->tr(L"Idioma", L"Language");
+		this->label1->Text = this->tr(L"1) Pasta do jogo (XML original a traduzir)", L"1) Game folder (original XML to translate)");
+		this->label2->Text = this->tr(L"2) Pasta de referencia (XML ja traduzido)", L"2) Reference folder (already translated XML)");
+		this->label5->Text = this->tr(L"3) Pasta de saida (onde salvar o resultado)", L"3) Output folder (where files are saved)");
+		this->button1->Text = this->tr(L"Abrir Explorer", L"Open Explorer");
+		this->button2->Text = this->button1->Text;
+		this->button5->Text = this->button1->Text;
+		this->button7->Text = this->tr(L"Gerar XML traduzido", L"Generate translated XML");
+		this->labelCredits->Text = this->tr(L"Creditos: master9028 | Projeto:", L"Credits: master9028 | Project:");
+
+		if (this->button7->Enabled)
+		{
+			this->label7->Text = this->tr(
+				L"Preencha os 3 passos: jogo original, referencia traduzida e pasta de saida.",
+				L"Fill in the 3 steps: original game folder, translated reference folder and output folder.");
+		}
 	}
 	private: String^ selectFolderWithExplorer(String^ dialogTitle, String^ initialPath, bool% dialogUnavailable) {
 		dialogUnavailable = false;
@@ -501,8 +566,8 @@ namespace PWTranslator {
 
 		for (int i = 0; i < maxCount; i++)
 		{
-			String^ beforeValue = i < sourceValues->Count ? sourceValues[i] : L"(sem valor)";
-			String^ afterValue = i < outputValues->Count ? outputValues[i] : L"(sem valor)";
+			String^ beforeValue = i < sourceValues->Count ? sourceValues[i] : this->tr(L"(sem valor)", L"(no value)");
+			String^ afterValue = i < outputValues->Count ? outputValues[i] : this->tr(L"(sem valor)", L"(no value)");
 
 			if (!String::Equals(beforeValue, afterValue, StringComparison::Ordinal))
 			{
@@ -517,7 +582,7 @@ namespace PWTranslator {
 	}
 	private: void showTranslationComparisonWindow(List<cli::array<String^>^>^ allChanges) {
 		Form^ compareForm = gcnew Form();
-		compareForm->Text = L"Comparacao de traducao";
+		compareForm->Text = this->tr(L"Comparacao de traducao", L"Translation comparison");
 		compareForm->StartPosition = FormStartPosition::CenterParent;
 		compareForm->Size = System::Drawing::Size(1220, 720);
 		compareForm->MinimumSize = System::Drawing::Size(900, 560);
@@ -531,17 +596,17 @@ namespace PWTranslator {
 		title->Padding = System::Windows::Forms::Padding(12, 10, 0, 0);
 		title->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 12.0F, FontStyle::Bold));
 		title->ForeColor = Color::FromArgb(121, 255, 214);
-		title->Text = L"Comparacao de String: antes x depois";
+		title->Text = this->tr(L"Comparacao de String: antes x depois", L"String comparison: before vs after");
 
 		Label^ subtitle = gcnew Label();
 		subtitle->Dock = DockStyle::Top;
 		subtitle->Height = 30;
 		subtitle->Padding = System::Windows::Forms::Padding(12, 6, 0, 0);
 		subtitle->ForeColor = Color::FromArgb(178, 185, 206);
-		subtitle->Text = L"Total de alteracoes encontradas: " + allChanges->Count.ToString();
+		subtitle->Text = this->tr(L"Total de alteracoes encontradas: ", L"Total changes found: ") + allChanges->Count.ToString();
 		if (allChanges->Count == 0)
 		{
-			subtitle->Text = subtitle->Text + L" (nenhuma diferenca de String detectada)";
+			subtitle->Text = subtitle->Text + this->tr(L" (nenhuma diferenca de String detectada)", L" (no String difference detected)");
 		}
 
 		DataGridView^ grid = gcnew DataGridView();
@@ -565,10 +630,10 @@ namespace PWTranslator {
 		grid->DefaultCellStyle->SelectionBackColor = Color::FromArgb(32, 62, 110);
 		grid->DefaultCellStyle->SelectionForeColor = Color::White;
 
-		grid->Columns->Add(L"file", L"Arquivo");
+		grid->Columns->Add(L"file", this->tr(L"Arquivo", L"File"));
 		grid->Columns->Add(L"index", L"String #");
-		grid->Columns->Add(L"before", L"Antes");
-		grid->Columns->Add(L"after", L"Depois");
+		grid->Columns->Add(L"before", this->tr(L"Antes", L"Before"));
+		grid->Columns->Add(L"after", this->tr(L"Depois", L"After"));
 		grid->Columns[0]->Width = 260;
 		grid->Columns[1]->Width = 70;
 		grid->Columns[2]->Width = 410;
@@ -580,7 +645,7 @@ namespace PWTranslator {
 		}
 
 		Button^ closeButton = gcnew Button();
-		closeButton->Text = L"Fechar";
+		closeButton->Text = this->tr(L"Fechar", L"Close");
 		closeButton->Height = 36;
 		closeButton->Dock = DockStyle::Bottom;
 		closeButton->FlatStyle = FlatStyle::Flat;
@@ -603,8 +668,8 @@ namespace PWTranslator {
 			String::IsNullOrWhiteSpace(this->textBox5->Text))
 		{
 			MessageBox::Show(
-				L"Preencha as 3 pastas para continuar.",
-				L"PW Tradutor",
+				this->tr(L"Preencha as 3 pastas para continuar.", L"Fill in the 3 folders to continue."),
+				this->tr(L"PW Tradutor", L"PW Translator"),
 				MessageBoxButtons::OK,
 				MessageBoxIcon::Warning);
 			return false;
@@ -613,8 +678,8 @@ namespace PWTranslator {
 		if (!Directory::Exists(this->textBox1->Text))
 		{
 			MessageBox::Show(
-				L"A pasta dos arquivos originais nao existe.",
-				L"PW Tradutor",
+				this->tr(L"A pasta dos arquivos originais nao existe.", L"The original XML folder does not exist."),
+				this->tr(L"PW Tradutor", L"PW Translator"),
 				MessageBoxButtons::OK,
 				MessageBoxIcon::Warning);
 			return false;
@@ -623,8 +688,8 @@ namespace PWTranslator {
 		if (!Directory::Exists(this->textBox2->Text))
 		{
 			MessageBox::Show(
-				L"A pasta base de traducao nao existe.",
-				L"PW Tradutor",
+				this->tr(L"A pasta base de traducao nao existe.", L"The translated reference folder does not exist."),
+				this->tr(L"PW Tradutor", L"PW Translator"),
 				MessageBoxButtons::OK,
 				MessageBoxIcon::Warning);
 			return false;
@@ -637,8 +702,8 @@ namespace PWTranslator {
 		catch (Exception^)
 		{
 			MessageBox::Show(
-				L"Nao foi possivel criar ou acessar a pasta de saida.",
-				L"PW Tradutor",
+				this->tr(L"Nao foi possivel criar ou acessar a pasta de saida.", L"Could not create or access the output folder."),
+				this->tr(L"PW Tradutor", L"PW Translator"),
 				MessageBoxButtons::OK,
 				MessageBoxIcon::Error);
 			return false;
@@ -647,13 +712,31 @@ namespace PWTranslator {
 		return true;
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->chooseFolderForTextBox(this->textBox1, L"Passo 1: Selecione a pasta do jogo (XML original)");
+		this->chooseFolderForTextBox(this->textBox1, this->tr(
+			L"Passo 1: Selecione a pasta do jogo (XML original)",
+			L"Step 1: Select the game folder (original XML)"));
 	}
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->chooseFolderForTextBox(this->textBox2, L"Passo 2: Selecione a pasta de referencia (XML traduzido)");
+		this->chooseFolderForTextBox(this->textBox2, this->tr(
+			L"Passo 2: Selecione a pasta de referencia (XML traduzido)",
+			L"Step 2: Select the reference folder (translated XML)"));
 	}
 	private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->chooseFolderForTextBox(this->textBox5, L"Passo 3: Selecione a pasta de saida");
+		this->chooseFolderForTextBox(this->textBox5, this->tr(
+			L"Passo 3: Selecione a pasta de saida",
+			L"Step 3: Select the output folder"));
+	}
+	private: System::Void comboLanguage_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
+		if (this->comboLanguage->SelectedIndex == 1)
+		{
+			this->currentLanguage = UILanguage::English;
+		}
+		else
+		{
+			this->currentLanguage = UILanguage::PtBr;
+		}
+
+		this->applyLanguageTexts();
 	}
 	private: System::Void linkGitHub_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 		try
@@ -667,8 +750,8 @@ namespace PWTranslator {
 		catch (Exception^)
 		{
 			MessageBox::Show(
-				L"Nao foi possivel abrir o GitHub agora.",
-				L"PW Tradutor",
+				this->tr(L"Nao foi possivel abrir o GitHub agora.", L"Could not open GitHub right now."),
+				this->tr(L"PW Tradutor", L"PW Translator"),
 				MessageBoxButtons::OK,
 				MessageBoxIcon::Information);
 		}
@@ -694,17 +777,20 @@ namespace PWTranslator {
 			this->translator = new TranslateInterface(this->textBox1->Text, this->textBox2->Text, this->textBox5->Text);
 			vector<wstring> files = this->translator->getAllFiles();
 			List<cli::array<String^>^>^ allChanges = gcnew List<cli::array<String^>^>();
-			wstring progress = L"Traduzindo XML: 0/" + to_wstring(files.size());
-			this->label7->Text = gcnew String(progress.c_str());
+			int totalFiles = static_cast<int>(files.size());
+			String^ progress = this->tr(L"Traduzindo XML: 0/", L"Translating XML: 0/") + totalFiles.ToString();
+			this->label7->Text = progress;
 
 			if (files.empty())
 			{
-				this->label7->Text = L"Nenhum arquivo XML foi encontrado na pasta original.";
+				this->label7->Text = this->tr(
+					L"Nenhum arquivo XML foi encontrado na pasta original.",
+					L"No XML files were found in the original folder.");
 				this->button7->Enabled = true;
 				return;
 			}
 
-			this->progressBar1->Maximum = static_cast<int>(files.size());
+			this->progressBar1->Maximum = totalFiles;
 			for (int index = 0; index < files.size(); index++)
 			{
 				String^ relativeFile = gcnew String(files[index].c_str());
@@ -716,20 +802,22 @@ namespace PWTranslator {
 				String^ outputFilePath = Path::Combine(this->textBox5->Text, relativeFile);
 				List<String^>^ outputValuesAfter = this->extractStringValuesFromXml(this->readFileContentAutoEncoding(outputFilePath));
 				this->collectFileStringChanges(relativeFile, sourceValuesBefore, outputValuesAfter, allChanges);
-				progress = L"Traduzindo XML: " + to_wstring(index + 1) + L"/" + to_wstring(files.size());
-				this->label7->Text = gcnew String(progress.c_str());
+				progress = this->tr(L"Traduzindo XML: ", L"Translating XML: ") + (index + 1).ToString() + L"/" + totalFiles.ToString();
+				this->label7->Text = progress;
 				this->label7->Update();
 				this->progressBar1->Increment(1);
 			}
 
-			progress = L"Traducao concluida: " + to_wstring(files.size()) + L"/" + to_wstring(files.size()) + L" arquivos XML.";
-			this->label7->Text = gcnew String(progress.c_str());
+			progress = this->tr(L"Traducao concluida: ", L"Translation completed: ") + totalFiles.ToString() + L"/" + totalFiles.ToString() + this->tr(L" arquivos XML.", L" XML files.");
+			this->label7->Text = progress;
 			this->label7->Update();
 			this->showTranslationComparisonWindow(allChanges);
 		}
 		catch (const std::exception&)
 		{
-			this->label7->Text = L"Ocorreu um erro durante a traducao. Confira as pastas e tente novamente.";
+			this->label7->Text = this->tr(
+				L"Ocorreu um erro durante a traducao. Confira as pastas e tente novamente.",
+				L"An error occurred during translation. Check the folders and try again.");
 		}
 
 		this->button7->Enabled = true;
