@@ -486,21 +486,17 @@ namespace PWTranslator {
 
 		return values;
 	}
-	private: void collectFileStringChanges(String^ relativeFile, List<cli::array<String^>^>^ allChanges) {
+	private: void collectFileStringChanges(String^ relativeFile, List<String^>^ sourceValues, List<String^>^ outputValues, List<cli::array<String^>^>^ allChanges) {
 		if (String::IsNullOrWhiteSpace(relativeFile))
 		{
 			return;
 		}
 
-		String^ sourceFile = Path::Combine(this->textBox1->Text, relativeFile);
-		String^ outputFile = Path::Combine(this->textBox5->Text, relativeFile);
-		if (!File::Exists(sourceFile) || !File::Exists(outputFile))
+		if (sourceValues == nullptr || outputValues == nullptr)
 		{
 			return;
 		}
 
-		List<String^>^ sourceValues = this->extractStringValuesFromXml(this->readFileContentAutoEncoding(sourceFile));
-		List<String^>^ outputValues = this->extractStringValuesFromXml(this->readFileContentAutoEncoding(outputFile));
 		int maxCount = Math::Max(sourceValues->Count, outputValues->Count);
 
 		for (int i = 0; i < maxCount; i++)
@@ -543,6 +539,10 @@ namespace PWTranslator {
 		subtitle->Padding = System::Windows::Forms::Padding(12, 6, 0, 0);
 		subtitle->ForeColor = Color::FromArgb(178, 185, 206);
 		subtitle->Text = L"Total de alteracoes encontradas: " + allChanges->Count.ToString();
+		if (allChanges->Count == 0)
+		{
+			subtitle->Text = subtitle->Text + L" (nenhuma diferenca de String detectada)";
+		}
 
 		DataGridView^ grid = gcnew DataGridView();
 		grid->Dock = DockStyle::Fill;
@@ -707,9 +707,15 @@ namespace PWTranslator {
 			this->progressBar1->Maximum = static_cast<int>(files.size());
 			for (int index = 0; index < files.size(); index++)
 			{
-				this->translator->translateFile(files[index]);
 				String^ relativeFile = gcnew String(files[index].c_str());
-				this->collectFileStringChanges(relativeFile, allChanges);
+				String^ sourceFilePath = Path::Combine(this->textBox1->Text, relativeFile);
+				List<String^>^ sourceValuesBefore = this->extractStringValuesFromXml(this->readFileContentAutoEncoding(sourceFilePath));
+
+				this->translator->translateFile(files[index]);
+
+				String^ outputFilePath = Path::Combine(this->textBox5->Text, relativeFile);
+				List<String^>^ outputValuesAfter = this->extractStringValuesFromXml(this->readFileContentAutoEncoding(outputFilePath));
+				this->collectFileStringChanges(relativeFile, sourceValuesBefore, outputValuesAfter, allChanges);
 				progress = L"Traduzindo XML: " + to_wstring(index + 1) + L"/" + to_wstring(files.size());
 				this->label7->Text = gcnew String(progress.c_str());
 				this->label7->Update();
