@@ -81,11 +81,13 @@ namespace PWTranslator {
 	private: System::Windows::Forms::LinkLabel^ linkGitHub;
 	private: System::Windows::Forms::Label^ labelLanguage;
 	private: System::Windows::Forms::ComboBox^ comboLanguage;
+	private: System::Windows::Forms::Label^ labelVersion;
 	private: enum class UILanguage
 	{
 		PtBr = 0,
 		English = 1
 	};
+	literal System::String^ EDITOR_VERSION = L"1.0.0";
 	private: UILanguage currentLanguage;
 
 	internal:
@@ -127,6 +129,7 @@ namespace PWTranslator {
 			this->linkGitHub = (gcnew System::Windows::Forms::LinkLabel());
 			this->labelLanguage = (gcnew System::Windows::Forms::Label());
 			this->comboLanguage = (gcnew System::Windows::Forms::ComboBox());
+			this->labelVersion = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// button1
@@ -278,11 +281,21 @@ namespace PWTranslator {
 			this->comboLanguage->TabIndex = 25;
 			this->comboLanguage->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::comboLanguage_SelectedIndexChanged);
 			// 
+			// labelVersion
+			// 
+			this->labelVersion->AutoSize = true;
+			this->labelVersion->Location = System::Drawing::Point(816, 330);
+			this->labelVersion->Name = L"labelVersion";
+			this->labelVersion->Size = System::Drawing::Size(79, 13);
+			this->labelVersion->TabIndex = 26;
+			this->labelVersion->Text = L"Versao: 1.0.0";
+			// 
 			// MainWindow
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(970, 360);
+			this->Controls->Add(this->labelVersion);
 			this->Controls->Add(this->comboLanguage);
 			this->Controls->Add(this->labelLanguage);
 			this->Controls->Add(this->linkGitHub);
@@ -322,15 +335,18 @@ namespace PWTranslator {
 		this->label5->BackColor = Color::Transparent;
 		this->label7->BackColor = Color::Transparent;
 		this->labelCredits->BackColor = Color::Transparent;
+		this->labelVersion->BackColor = Color::Transparent;
 
 		this->label1->ForeColor = Color::FromArgb(178, 185, 206);
 		this->label2->ForeColor = Color::FromArgb(178, 185, 206);
 		this->label5->ForeColor = Color::FromArgb(178, 185, 206);
 		this->label7->ForeColor = Color::FromArgb(121, 255, 214);
 		this->labelCredits->ForeColor = Color::FromArgb(130, 139, 168);
+		this->labelVersion->ForeColor = Color::FromArgb(130, 139, 168);
 		this->labelLanguage->ForeColor = Color::FromArgb(178, 185, 206);
 		this->label7->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 10.75F, System::Drawing::FontStyle::Bold));
 		this->labelCredits->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 9.25F, System::Drawing::FontStyle::Regular));
+		this->labelVersion->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 9.25F, System::Drawing::FontStyle::Regular));
 		this->labelLanguage->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 9.25F, System::Drawing::FontStyle::Regular));
 		this->label7->Text = L"";
 		this->labelCredits->Text = L"";
@@ -420,6 +436,7 @@ namespace PWTranslator {
 		this->button5->Text = this->button1->Text;
 		this->button7->Text = this->tr(L"Gerar XML traduzido", L"Generate translated XML");
 		this->labelCredits->Text = this->tr(L"Creditos: master9028 | Projeto:", L"Credits: master9028 | Project:");
+		this->labelVersion->Text = this->tr(L"Versao do editor: v", L"Editor version: v") + EDITOR_VERSION;
 
 		if (this->button7->Enabled)
 		{
