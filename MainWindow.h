@@ -2,6 +2,11 @@
 
 #include "TranslateInterface.h"
 #include <thread>
+#include <shobjidl.h>
+#include <vcclr.h>
+
+#pragma comment(lib, "Ole32.lib")
+#pragma comment(lib, "Shell32.lib")
 
 namespace PWTranslator {
 
@@ -111,100 +116,100 @@ namespace PWTranslator {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(759, 8);
+			this->button1->Location = System::Drawing::Point(796, 50);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(78, 20);
+			this->button1->Size = System::Drawing::Size(150, 32);
 			this->button1->TabIndex = 0;
-			this->button1->Text = L"Selecionar";
+			this->button1->Text = L"Abrir Explorer";
 			this->button1->UseVisualStyleBackColor = true;
 			this->button1->Click += gcnew System::EventHandler(this, &MainWindow::button1_Click);
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(404, 8);
+			this->textBox1->Location = System::Drawing::Point(22, 50);
 			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(349, 20);
+			this->textBox1->Size = System::Drawing::Size(760, 23);
 			this->textBox1->TabIndex = 1;
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->label1->Location = System::Drawing::Point(12, 9);
+			this->label1->Location = System::Drawing::Point(22, 26);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(273, 16);
+			this->label1->Size = System::Drawing::Size(250, 16);
 			this->label1->TabIndex = 2;
-			this->label1->Text = L"1) Pasta dos arquivos originais";
+			this->label1->Text = L"1) Pasta de origem (XML original)";
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->label2->Location = System::Drawing::Point(12, 41);
+			this->label2->Location = System::Drawing::Point(22, 92);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(326, 16);
+			this->label2->Size = System::Drawing::Size(247, 16);
 			this->label2->TabIndex = 3;
-			this->label2->Text = L"2) Pasta dos arquivos traduzidos (base)";
+			this->label2->Text = L"2) Pasta base (XML traduzido)";
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(404, 40);
+			this->textBox2->Location = System::Drawing::Point(22, 116);
 			this->textBox2->Name = L"textBox2";
-			this->textBox2->Size = System::Drawing::Size(349, 20);
+			this->textBox2->Size = System::Drawing::Size(760, 23);
 			this->textBox2->TabIndex = 4;
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(760, 41);
+			this->button2->Location = System::Drawing::Point(796, 116);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(78, 20);
+			this->button2->Size = System::Drawing::Size(150, 32);
 			this->button2->TabIndex = 5;
-			this->button2->Text = L"Selecionar";
+			this->button2->Text = L"Abrir Explorer";
 			this->button2->UseVisualStyleBackColor = true;
 			this->button2->Click += gcnew System::EventHandler(this, &MainWindow::button2_Click);
 			// 
 			// button5
 			// 
-			this->button5->Location = System::Drawing::Point(760, 73);
+			this->button5->Location = System::Drawing::Point(796, 182);
 			this->button5->Name = L"button5";
-			this->button5->Size = System::Drawing::Size(78, 20);
+			this->button5->Size = System::Drawing::Size(150, 32);
 			this->button5->TabIndex = 14;
-			this->button5->Text = L"Selecionar";
+			this->button5->Text = L"Abrir Explorer";
 			this->button5->UseVisualStyleBackColor = true;
 			this->button5->Click += gcnew System::EventHandler(this, &MainWindow::button5_Click);
 			// 
 			// textBox5
 			// 
-			this->textBox5->Location = System::Drawing::Point(404, 73);
+			this->textBox5->Location = System::Drawing::Point(22, 182);
 			this->textBox5->Name = L"textBox5";
-			this->textBox5->Size = System::Drawing::Size(349, 20);
+			this->textBox5->Size = System::Drawing::Size(760, 23);
 			this->textBox5->TabIndex = 13;
 			// 
 			// label5
 			// 
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Arial", 10));
-			this->label5->Location = System::Drawing::Point(12, 74);
+			this->label5->Location = System::Drawing::Point(22, 158);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(210, 16);
+			this->label5->Size = System::Drawing::Size(168, 16);
 			this->label5->TabIndex = 12;
-			this->label5->Text = L"3) Pasta para salvar o resultado";
+			this->label5->Text = L"3) Pasta de destino";
 			// 
 			// button7
 			// 
-			this->button7->Location = System::Drawing::Point(206, 106);
+			this->button7->Location = System::Drawing::Point(22, 226);
 			this->button7->Name = L"button7";
-			this->button7->Size = System::Drawing::Size(346, 33);
+			this->button7->Size = System::Drawing::Size(924, 44);
 			this->button7->TabIndex = 18;
-			this->button7->Text = L"Iniciar traducao";
+			this->button7->Text = L"Traduzir XML agora";
 			this->button7->UseVisualStyleBackColor = true;
 			this->button7->Click += gcnew System::EventHandler(this, &MainWindow::button7_Click);
 			// 
 			// progressBar1
 			// 
-			this->progressBar1->Location = System::Drawing::Point(15, 175);
+			this->progressBar1->Location = System::Drawing::Point(22, 304);
 			this->progressBar1->Name = L"progressBar1";
-			this->progressBar1->Size = System::Drawing::Size(823, 33);
+			this->progressBar1->Size = System::Drawing::Size(924, 20);
 			this->progressBar1->TabIndex = 20;
 			// 
 			// label7
@@ -212,7 +217,7 @@ namespace PWTranslator {
 			this->label7->AutoSize = true;
 			this->label7->Font = (gcnew System::Drawing::Font(L"Arial", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label7->Location = System::Drawing::Point(12, 145);
+			this->label7->Location = System::Drawing::Point(22, 278);
 			this->label7->Name = L"label7";
 			this->label7->Size = System::Drawing::Size(0, 18);
 			this->label7->TabIndex = 21;
@@ -220,7 +225,7 @@ namespace PWTranslator {
 			// labelCredits
 			// 
 			this->labelCredits->AutoSize = true;
-			this->labelCredits->Location = System::Drawing::Point(12, 221);
+			this->labelCredits->Location = System::Drawing::Point(22, 330);
 			this->labelCredits->Name = L"labelCredits";
 			this->labelCredits->Size = System::Drawing::Size(122, 16);
 			this->labelCredits->TabIndex = 22;
@@ -229,7 +234,7 @@ namespace PWTranslator {
 			// linkGitHub
 			// 
 			this->linkGitHub->AutoSize = true;
-			this->linkGitHub->Location = System::Drawing::Point(225, 221);
+			this->linkGitHub->Location = System::Drawing::Point(246, 330);
 			this->linkGitHub->Name = L"linkGitHub";
 			this->linkGitHub->Size = System::Drawing::Size(165, 16);
 			this->linkGitHub->TabIndex = 23;
@@ -242,7 +247,7 @@ namespace PWTranslator {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(850, 252);
+			this->ClientSize = System::Drawing::Size(970, 360);
 			this->Controls->Add(this->linkGitHub);
 			this->Controls->Add(this->labelCredits);
 			this->Controls->Add(this->label7);
@@ -267,12 +272,13 @@ namespace PWTranslator {
 #pragma endregion
 	private: void applyVisualStyle() {
 		this->DoubleBuffered = true;
-		this->BackColor = Color::FromArgb(11, 19, 37);
-		this->ForeColor = Color::FromArgb(238, 248, 255);
-		this->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiLight", 9.75F, System::Drawing::FontStyle::Regular));
+		this->BackColor = Color::FromArgb(9, 9, 12);
+		this->ForeColor = Color::FromArgb(232, 236, 245);
+		this->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiLight", 10.0F, System::Drawing::FontStyle::Regular));
 		this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 		this->MaximizeBox = false;
 		this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
+		this->MinimumSize = System::Drawing::Size(986, 399);
 
 		this->label1->BackColor = Color::Transparent;
 		this->label2->BackColor = Color::Transparent;
@@ -280,34 +286,34 @@ namespace PWTranslator {
 		this->label7->BackColor = Color::Transparent;
 		this->labelCredits->BackColor = Color::Transparent;
 
-		this->label1->ForeColor = Color::FromArgb(143, 238, 255);
-		this->label2->ForeColor = Color::FromArgb(143, 238, 255);
-		this->label5->ForeColor = Color::FromArgb(143, 238, 255);
-		this->label7->ForeColor = Color::FromArgb(255, 214, 102);
-		this->labelCredits->ForeColor = Color::FromArgb(186, 223, 255);
-		this->label7->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 11.0F, System::Drawing::FontStyle::Bold));
+		this->label1->ForeColor = Color::FromArgb(178, 185, 206);
+		this->label2->ForeColor = Color::FromArgb(178, 185, 206);
+		this->label5->ForeColor = Color::FromArgb(178, 185, 206);
+		this->label7->ForeColor = Color::FromArgb(121, 255, 214);
+		this->labelCredits->ForeColor = Color::FromArgb(130, 139, 168);
+		this->label7->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 10.75F, System::Drawing::FontStyle::Bold));
 		this->labelCredits->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 9.25F, System::Drawing::FontStyle::Regular));
-		this->label7->Text = L"Tudo pronto. Escolha as pastas e clique em Iniciar traducao.";
-		this->labelCredits->Text = L"Creditos: master9028 | GitHub:";
+		this->label7->Text = L"Painel pronto. Selecione as pastas no Explorer e inicie a traducao.";
+		this->labelCredits->Text = L"Creditos: master9028 | Projeto:";
 
-		this->linkGitHub->LinkColor = Color::FromArgb(122, 248, 255);
-		this->linkGitHub->VisitedLinkColor = Color::FromArgb(255, 175, 130);
+		this->linkGitHub->LinkColor = Color::FromArgb(92, 170, 255);
+		this->linkGitHub->VisitedLinkColor = Color::FromArgb(177, 132, 255);
 		this->linkGitHub->ActiveLinkColor = Color::FromArgb(255, 255, 255);
-		this->linkGitHub->Font = (gcnew System::Drawing::Font(L"Consolas", 9.0F, System::Drawing::FontStyle::Bold));
+		this->linkGitHub->Font = (gcnew System::Drawing::Font(L"Consolas", 9.25F, System::Drawing::FontStyle::Bold));
 		this->linkGitHub->Text = L"Mastersymnet/PWT";
 
-		this->textBox1->BackColor = Color::FromArgb(17, 33, 62);
-		this->textBox2->BackColor = Color::FromArgb(17, 33, 62);
-		this->textBox5->BackColor = Color::FromArgb(17, 33, 62);
-		this->textBox1->ForeColor = Color::FromArgb(231, 247, 255);
-		this->textBox2->ForeColor = Color::FromArgb(231, 247, 255);
-		this->textBox5->ForeColor = Color::FromArgb(231, 247, 255);
+		this->textBox1->BackColor = Color::FromArgb(17, 17, 23);
+		this->textBox2->BackColor = Color::FromArgb(17, 17, 23);
+		this->textBox5->BackColor = Color::FromArgb(17, 17, 23);
+		this->textBox1->ForeColor = Color::FromArgb(241, 246, 255);
+		this->textBox2->ForeColor = Color::FromArgb(241, 246, 255);
+		this->textBox5->ForeColor = Color::FromArgb(241, 246, 255);
 		this->textBox1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 		this->textBox2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 		this->textBox5->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-		this->textBox1->Font = (gcnew System::Drawing::Font(L"Consolas", 9.25F));
-		this->textBox2->Font = (gcnew System::Drawing::Font(L"Consolas", 9.25F));
-		this->textBox5->Font = (gcnew System::Drawing::Font(L"Consolas", 9.25F));
+		this->textBox1->Font = (gcnew System::Drawing::Font(L"Consolas", 9.75F));
+		this->textBox2->Font = (gcnew System::Drawing::Font(L"Consolas", 9.75F));
+		this->textBox5->Font = (gcnew System::Drawing::Font(L"Consolas", 9.75F));
 
 		this->button1->UseVisualStyleBackColor = false;
 		this->button2->UseVisualStyleBackColor = false;
@@ -324,27 +330,127 @@ namespace PWTranslator {
 		this->button5->Cursor = Cursors::Hand;
 		this->button7->Cursor = Cursors::Hand;
 
-		this->button1->BackColor = Color::FromArgb(0, 119, 182);
-		this->button2->BackColor = Color::FromArgb(0, 119, 182);
-		this->button5->BackColor = Color::FromArgb(0, 119, 182);
-		this->button1->ForeColor = Color::White;
-		this->button2->ForeColor = Color::White;
-		this->button5->ForeColor = Color::White;
+		this->button1->BackColor = Color::FromArgb(28, 28, 36);
+		this->button2->BackColor = Color::FromArgb(28, 28, 36);
+		this->button5->BackColor = Color::FromArgb(28, 28, 36);
+		this->button1->ForeColor = Color::FromArgb(222, 232, 255);
+		this->button2->ForeColor = Color::FromArgb(222, 232, 255);
+		this->button5->ForeColor = Color::FromArgb(222, 232, 255);
 
-		this->button1->FlatAppearance->BorderColor = Color::FromArgb(144, 224, 239);
-		this->button2->FlatAppearance->BorderColor = Color::FromArgb(144, 224, 239);
-		this->button5->FlatAppearance->BorderColor = Color::FromArgb(144, 224, 239);
+		this->button1->FlatAppearance->BorderColor = Color::FromArgb(60, 71, 97);
+		this->button2->FlatAppearance->BorderColor = Color::FromArgb(60, 71, 97);
+		this->button5->FlatAppearance->BorderColor = Color::FromArgb(60, 71, 97);
 		this->button1->FlatAppearance->BorderSize = 1;
 		this->button2->FlatAppearance->BorderSize = 1;
 		this->button5->FlatAppearance->BorderSize = 1;
+		this->button1->FlatAppearance->MouseOverBackColor = Color::FromArgb(41, 41, 52);
+		this->button2->FlatAppearance->MouseOverBackColor = Color::FromArgb(41, 41, 52);
+		this->button5->FlatAppearance->MouseOverBackColor = Color::FromArgb(41, 41, 52);
+		this->button1->FlatAppearance->MouseDownBackColor = Color::FromArgb(20, 20, 28);
+		this->button2->FlatAppearance->MouseDownBackColor = Color::FromArgb(20, 20, 28);
+		this->button5->FlatAppearance->MouseDownBackColor = Color::FromArgb(20, 20, 28);
 
-		this->button7->BackColor = Color::FromArgb(255, 96, 55);
-		this->button7->ForeColor = Color::FromArgb(255, 247, 230);
-		this->button7->FlatAppearance->BorderColor = Color::FromArgb(255, 175, 130);
-		this->button7->FlatAppearance->BorderSize = 2;
-		this->button7->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 11.25F, System::Drawing::FontStyle::Bold));
+		this->button7->BackColor = Color::FromArgb(32, 122, 244);
+		this->button7->ForeColor = Color::FromArgb(245, 249, 255);
+		this->button7->FlatAppearance->BorderColor = Color::FromArgb(92, 170, 255);
+		this->button7->FlatAppearance->BorderSize = 1;
+		this->button7->FlatAppearance->MouseOverBackColor = Color::FromArgb(46, 136, 255);
+		this->button7->FlatAppearance->MouseDownBackColor = Color::FromArgb(24, 104, 217);
+		this->button7->Font = (gcnew System::Drawing::Font(L"Bahnschrift SemiBold", 12.0F, System::Drawing::FontStyle::Bold));
 
 		this->progressBar1->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
+		this->progressBar1->BackColor = Color::FromArgb(22, 22, 30);
+	}
+	private: String^ selectFolderWithExplorer(String^ dialogTitle, String^ initialPath, bool% dialogUnavailable) {
+		dialogUnavailable = false;
+		IFileOpenDialog* fileDialog = nullptr;
+		HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&fileDialog));
+		if (FAILED(hr) || fileDialog == nullptr)
+		{
+			dialogUnavailable = true;
+			return nullptr;
+		}
+
+		DWORD options = 0;
+		if (SUCCEEDED(fileDialog->GetOptions(&options)))
+		{
+			fileDialog->SetOptions(options | FOS_PICKFOLDERS | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST);
+		}
+
+		if (!String::IsNullOrWhiteSpace(dialogTitle))
+		{
+			pin_ptr<const wchar_t> titlePtr = PtrToStringChars(dialogTitle);
+			fileDialog->SetTitle(titlePtr);
+		}
+
+		if (!String::IsNullOrWhiteSpace(initialPath) && Directory::Exists(initialPath))
+		{
+			IShellItem* initialFolder = nullptr;
+			pin_ptr<const wchar_t> initialPathPtr = PtrToStringChars(initialPath);
+			if (SUCCEEDED(SHCreateItemFromParsingName(initialPathPtr, nullptr, IID_PPV_ARGS(&initialFolder))) && initialFolder != nullptr)
+			{
+				fileDialog->SetDefaultFolder(initialFolder);
+				fileDialog->SetFolder(initialFolder);
+				initialFolder->Release();
+			}
+		}
+
+		hr = fileDialog->Show((HWND)this->Handle.ToPointer());
+		if (hr == HRESULT_FROM_WIN32(ERROR_CANCELLED))
+		{
+			fileDialog->Release();
+			return nullptr;
+		}
+		if (FAILED(hr))
+		{
+			dialogUnavailable = true;
+			fileDialog->Release();
+			return nullptr;
+		}
+
+		IShellItem* selectedItem = nullptr;
+		hr = fileDialog->GetResult(&selectedItem);
+		if (FAILED(hr) || selectedItem == nullptr)
+		{
+			dialogUnavailable = true;
+			fileDialog->Release();
+			return nullptr;
+		}
+
+		PWSTR selectedPath = nullptr;
+		hr = selectedItem->GetDisplayName(SIGDN_FILESYSPATH, &selectedPath);
+		String^ selectedFolder = nullptr;
+		if (SUCCEEDED(hr) && selectedPath != nullptr)
+		{
+			selectedFolder = gcnew String(selectedPath);
+		}
+		else
+		{
+			dialogUnavailable = true;
+		}
+
+		if (selectedPath != nullptr)
+		{
+			CoTaskMemFree(selectedPath);
+		}
+
+		selectedItem->Release();
+		fileDialog->Release();
+		return selectedFolder;
+	}
+	private: void chooseFolderForTextBox(TextBox^ targetBox, String^ dialogTitle) {
+		bool dialogUnavailable = false;
+		String^ selectedFolder = this->selectFolderWithExplorer(dialogTitle, targetBox->Text, dialogUnavailable);
+		if (!String::IsNullOrWhiteSpace(selectedFolder))
+		{
+			targetBox->Text = selectedFolder;
+			return;
+		}
+
+		if (dialogUnavailable && folderBrowserDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+		{
+			targetBox->Text = folderBrowserDialog1->SelectedPath;
+		}
 	}
 	private: bool validatePaths() {
 		if (String::IsNullOrWhiteSpace(this->textBox1->Text) ||
@@ -396,25 +502,13 @@ namespace PWTranslator {
 		return true;
 	}
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (folderBrowserDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-		{
-			String^ fileName = folderBrowserDialog1->SelectedPath;
-			textBox1->Text = fileName;
-		}
+		this->chooseFolderForTextBox(this->textBox1, L"Selecione a pasta de origem dos XML");
 	}
 	private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (folderBrowserDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-		{
-			String^ fileName = folderBrowserDialog1->SelectedPath;
-			textBox2->Text = fileName;
-		}
+		this->chooseFolderForTextBox(this->textBox2, L"Selecione a pasta base de traducao");
 	}
 	private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (folderBrowserDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-		{
-			String^ fileName = folderBrowserDialog1->SelectedPath;
-			textBox5->Text = fileName;
-		}
+		this->chooseFolderForTextBox(this->textBox5, L"Selecione a pasta de destino");
 	}
 	private: System::Void linkGitHub_LinkClicked(System::Object^ sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs^ e) {
 		try
