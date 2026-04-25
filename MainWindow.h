@@ -486,7 +486,7 @@ namespace PWTranslator {
 
 		return values;
 	}
-	private: void collectFileStringChanges(String^ relativeFile, List<array<String^>^>^ allChanges) {
+	private: void collectFileStringChanges(String^ relativeFile, List<cli::array<String^>^>^ allChanges) {
 		if (String::IsNullOrWhiteSpace(relativeFile))
 		{
 			return;
@@ -510,7 +510,7 @@ namespace PWTranslator {
 
 			if (!String::Equals(beforeValue, afterValue, StringComparison::Ordinal))
 			{
-				array<String^>^ row = gcnew array<String^>(4);
+				cli::array<String^>^ row = gcnew cli::array<String^>(4);
 				row[0] = relativeFile;
 				row[1] = (i + 1).ToString();
 				row[2] = beforeValue;
@@ -519,7 +519,7 @@ namespace PWTranslator {
 			}
 		}
 	}
-	private: void showTranslationComparisonWindow(List<array<String^>^>^ allChanges) {
+	private: void showTranslationComparisonWindow(List<cli::array<String^>^>^ allChanges) {
 		Form^ compareForm = gcnew Form();
 		compareForm->Text = L"Comparacao de traducao";
 		compareForm->StartPosition = FormStartPosition::CenterParent;
@@ -574,9 +574,9 @@ namespace PWTranslator {
 		grid->Columns[2]->Width = 410;
 		grid->Columns[3]->Width = 410;
 
-		for each (array<String^> ^ row in allChanges)
+		for each (cli::array<String^> ^ row in allChanges)
 		{
-			grid->Rows->Add(row);
+			grid->Rows->Add(row[0], row[1], row[2], row[3]);
 		}
 
 		Button^ closeButton = gcnew Button();
@@ -589,7 +589,7 @@ namespace PWTranslator {
 		closeButton->BackColor = Color::FromArgb(28, 28, 36);
 		closeButton->ForeColor = Color::FromArgb(222, 232, 255);
 		closeButton->Cursor = Cursors::Hand;
-		closeButton->Click += gcnew EventHandler(compareForm, &Form::Close);
+		closeButton->DialogResult = System::Windows::Forms::DialogResult::OK;
 
 		compareForm->Controls->Add(grid);
 		compareForm->Controls->Add(closeButton);
@@ -693,7 +693,7 @@ namespace PWTranslator {
 		{
 			this->translator = new TranslateInterface(this->textBox1->Text, this->textBox2->Text, this->textBox5->Text);
 			vector<wstring> files = this->translator->getAllFiles();
-			List<array<String^>^>^ allChanges = gcnew List<array<String^>^>();
+			List<cli::array<String^>^>^ allChanges = gcnew List<cli::array<String^>^>();
 			wstring progress = L"Traduzindo XML: 0/" + to_wstring(files.size());
 			this->label7->Text = gcnew String(progress.c_str());
 
